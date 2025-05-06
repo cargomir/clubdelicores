@@ -13,11 +13,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # === Cargar datos ===
-recetas = pd.read_excel("data/recetas.xlsx", sheet_name="receta")
-complementos = pd.read_excel("data/recetas.xlsx", sheet_name="complementos")
-tecnicas = pd.read_excel("data/recetas.xlsx", sheet_name="tecnicas")
-jarabes = pd.read_excel("data/recetas.xlsx", sheet_name="jarabe")
-recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
+recetas = pd.read_excel("coctel_app/data/recetas.xlsx", sheet_name="receta")
+complementos = pd.read_excel("coctel_app/data/recetas.xlsx", sheet_name="complementos")
+tecnicas = pd.read_excel("coctel_app/data/recetas.xlsx", sheet_name="tecnicas")
+jarabes = pd.read_excel("coctel_app/data/recetas.xlsx", sheet_name="jarabe")
+recursos = pd.read_excel("coctel_app/data/recetas.xlsx", sheet_name="recurso")
 
 # === Sidebar ===
 
@@ -97,7 +97,7 @@ st.title(f" {coctel_sel}")
 # Mostrar imagen si existe (nombre del archivo debe coincidir con el cóctel)
 from PIL import Image
 import os
-image_path = f"imagenes/{coctel_sel}.jpg"
+image_path = f"coctel_app/imagenes/{coctel_sel}.jpg"
 if os.path.exists(image_path):
     st.image(image_path, width=400)
 else:
