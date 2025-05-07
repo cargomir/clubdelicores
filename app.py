@@ -155,7 +155,7 @@ if jarabes_presentes:
 
 # === Información sobre el hielo ===
 hielo = fila_receta["hielo"]
-if pd.notna(hielo) and str(hielo).strip().lower() in ["sí", "si", "true", "1"]:
+if pd.notna(hielo) and str(hielo).strip().lower() in ["Sí", "Si", "sí", "si"]:
     st.markdown("### Hielo")
     st.write("❄️ Servir en un vaso o copa con hielo. Preferir hielos de mayor tamaño para retardar la dilución")
 else:
