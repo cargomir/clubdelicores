@@ -160,7 +160,7 @@ if pd.notna(hielo) and str(hielo).strip().lower() in ["sí", "si", "true", "1"]:
     st.write("❄️ Servir en un vaso o copa con hielo. Preferir hielos de mayor tamaño para retardar la dilución")
 else:
     st.markdown("### Hielo")
-    st.write("🚫 Servir en una copa sin hielo, debido a que la temperatura se bajó durante la preparación.")
+    st.write("🚫 Servir sin hielo.")
 
 # === Técnica de preparación ===
 st.markdown("### Técnica de preparación")
