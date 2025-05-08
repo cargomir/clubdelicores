@@ -39,8 +39,13 @@ coctel_sel = st.sidebar.selectbox(
 )
 
 # Escoger unidad de medida
-unidad = st.sidebar.radio("Unidad de medida", ["ml", "oz"])
-factor_conversion = 1 if unidad == "ml" else 1/30
+unidad_opciones = {
+    "Mililitros (ml)": "ml",
+    "Onzas (oz)": "oz"
+}
+unidad_label = st.sidebar.radio("Unidad de medida", list(unidad_opciones.keys()))
+unidad = unidad_opciones[unidad_label]
+factor_conversion = 1 if unidad == "ml" else 1 / 30
 
 # Escoger tipo de cálculo 
 modo = st.sidebar.radio("Tipo de cantidad", ["Cantidad de cócteles", "Volumen total (litros)"])
