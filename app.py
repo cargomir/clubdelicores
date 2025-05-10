@@ -23,20 +23,37 @@ recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
 
 st.sidebar.title("Opciones")
 
+# === Identificar columnas de licor base ===
+columnas_licor = recetas.columns[9:37]  # Asumiendo columnas I:AK están en esas posiciones (8 a 36)
+
+# Crear filtro de licor base
+licores_disponibles = sorted(columnas_licor)
+licor_sel = st.sidebar.selectbox("Filtrar por licor base", ["Todos"] + licores_disponibles)
+
+# Aplicar filtro si no es "Todos"
+if licor_sel == "Todos":
+    recetas_filtradas = recetas
+else:
+    recetas_filtradas = recetas[recetas[licor_sel].fillna(0) > 0]
+
 # Obtener cócteles únicos y ordenarlos
-cocteles = sorted(recetas["coctel"].dropna().unique())
+cocteles = sorted(recetas_filtradas["coctel"].dropna().unique())
 
 # Usar session_state para mantener la selección
-if "coctel_sel" not in st.session_state:
-    st.session_state.coctel_sel = cocteles[0]  # Valor por defecto
+if "coctel_sel" not in st.session_state or st.session_state.coctel_sel not in cocteles:
+    st.session_state.coctel_sel = cocteles[0] if cocteles else None
 
-# Mostrar selector con valor recordado
-coctel_sel = st.sidebar.selectbox(
-    "Selecciona un cóctel",
-    cocteles,
-    index=cocteles.index(st.session_state.coctel_sel),
-    key="coctel_sel"
-)
+# Mostrar selector de cóctel solo si hay disponibles
+if cocteles:
+    coctel_sel = st.sidebar.selectbox(
+        "Selecciona un cóctel",
+        cocteles,
+        index=cocteles.index(st.session_state.coctel_sel),
+        key="coctel_sel"
+    )
+else:
+    coctel_sel = None
+    st.sidebar.warning("No hay cócteles para ese licor base.")
 
 # Escoger unidad de medida
 unidad_opciones = {
@@ -68,6 +85,19 @@ else:
     # Formato para visualización
     litros_mostrados = str(int(litros)) if litros == int(litros) else str(litros).replace(".", ",")
     st.write(f"Volumen total: {litros_mostrados} litros ({int(volumen_deseado)} ml)")
+
+# === Verificar selección válida de cóctel antes de continuar ===
+if coctel_sel:
+    receta_seleccionada = recetas[recetas["coctel"] == coctel_sel]
+    
+    if not receta_seleccionada.empty:
+        fila_receta = receta_seleccionada.iloc[0]
+    else:
+        st.warning("No se encontró información para el cóctel seleccionado.")
+        st.stop()
+else:
+    st.info("Selecciona un cóctel para ver los detalles.")
+    st.stop()
 
 # === Filtro receta ===
 fila_receta = recetas[recetas["coctel"] == coctel_sel].iloc[0]
