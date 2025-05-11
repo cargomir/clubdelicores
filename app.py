@@ -24,26 +24,35 @@ recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
 st.sidebar.title("Opciones")
 
 # === Identificar columnas de licor base ===
-columnas_licor = recetas.columns[9:37]  # Asumiendo columnas I:AK están en esas posiciones (8 a 36)
+columnas_licor = recetas.columns[8:37] 
 
-# Crear filtro de licor base
-licores_disponibles = sorted(columnas_licor)
-licor_sel = st.sidebar.selectbox("Filtrar por licor base", ["Todos"] + licores_disponibles)
+# Verificar que haya columnas de licor disponibles
+licores_disponibles = sorted(columnas_licor.tolist()) if not columnas_licor.empty else []
 
-# Aplicar filtro si no es "Todos"
+# Crear selector de licor base
+licor_sel = st.sidebar.selectbox("Filtrar por licor base", ["Todos"] + licores_disponibles + ["Sin Alcohol"])
+
+# Aplicar filtro según selección
 if licor_sel == "Todos":
     recetas_filtradas = recetas
-else:
+elif licor_sel == "Sin Alcohol":
+    # Filtro: todas las columnas de licor tienen 0 o NaN
+    recetas_filtradas = recetas[recetas[columnas_licor].fillna(0).sum(axis=1) == 0]
+elif licor_sel in recetas.columns:
+    # Filtro: valor positivo en la columna seleccionada
     recetas_filtradas = recetas[recetas[licor_sel].fillna(0) > 0]
+else:
+    # Filtro inválido (no debería pasar, pero cubre errores)
+    recetas_filtradas = recetas.iloc[0:0]
 
 # Obtener cócteles únicos y ordenarlos
 cocteles = sorted(recetas_filtradas["coctel"].dropna().unique())
 
-# Usar session_state para mantener la selección
+# Mantener selección previa si es válida, sino usar primero disponible
 if "coctel_sel" not in st.session_state or st.session_state.coctel_sel not in cocteles:
     st.session_state.coctel_sel = cocteles[0] if cocteles else None
 
-# Mostrar selector de cóctel solo si hay disponibles
+# Mostrar selector de cóctel o advertencia si no hay opciones
 if cocteles:
     coctel_sel = st.sidebar.selectbox(
         "Selecciona un cóctel",
