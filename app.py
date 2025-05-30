@@ -24,7 +24,7 @@ recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
 st.sidebar.title("Opciones")
 
 # === Identificar columnas de licor base ===
-columnas_licor = recetas.columns[8:37] 
+columnas_licor = recetas.columns[8:39] 
 
 # Verificar que haya columnas de licor disponibles
 licores_disponibles = sorted(columnas_licor.tolist()) if not columnas_licor.empty else []
@@ -154,7 +154,10 @@ st.markdown("### Ingredientes")
 ingredientes_a_gusto = {
     "Sal": "sal",
     "Sal de Apio": "sal de apio",
-    "Pimienta": "pimienta"
+    "Pimienta": "pimienta",
+    "Canela": "canela",
+    "Nuez Moscada": "nuez moscada",
+    "Azúcar Flor": "azucar flor"
 }
 
 ingredientes_gotas = {
