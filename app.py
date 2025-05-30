@@ -157,7 +157,7 @@ ingredientes_a_gusto = {
     "Pimienta": "pimienta",
     "Canela": "canela",
     "Nuez Moscada": "nuez moscada",
-    "Azúcar Flor": "azucar flor"
+    "Azúcar Flor": "azúcar flor"
 }
 
 ingredientes_gotas = {
