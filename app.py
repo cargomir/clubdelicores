@@ -6,14 +6,15 @@ st.set_page_config(page_title="Club de Licores", page_icon="imagenes/favicon.ico
 
 # === Encabezado ===
 
-# Cargar la imagen local
-logo = Image.open("imagenes/icon3.png")
+# Cargar la imagen
+logo = Image.open("imagenes/icon3.png").convert("RGBA")
+logo = logo.resize((60, 60), Image.Resampling.LANCZOS)
 
 # Crear tres columnas de ancho proporcional
 col1, col2, col3 = st.columns([1, 3, 4])
 
 with col1:
-    st.image(logo, width=60)
+    st.image(logo)
 
 with col2:
     st.markdown("<div style='font-size: 36px; font-weight: bold; color: black;'>Club de Licores</div>", unsafe_allow_html=True)
