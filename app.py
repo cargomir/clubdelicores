@@ -13,7 +13,7 @@ logo = Image.open("imagenes/icon3.png")
 col1, col2, col3 = st.columns([1, 3, 4])
 
 with col1:
-    st.image(logo, width=50)
+    st.image(logo, width=60)
 
 with col2:
     st.markdown("<div style='font-size: 36px; font-weight: bold; color: black;'>Club de Licores</div>", unsafe_allow_html=True)
