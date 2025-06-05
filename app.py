@@ -8,18 +8,6 @@ from io import BytesIO
 
 st.set_page_config(page_title="Club de Licores", page_icon="imagenes/favicon.ico")
 
-# === Color personalizado para la barra lateral ===
-st.markdown(
-    """
-    <style>
-    section[data-testid="stSidebar"] {
-        background-color: #f6d3c1;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # === Encabezado ===
 
 # Convertir imagen a base64
