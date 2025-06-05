@@ -15,7 +15,7 @@ def image_to_base64(img):
     return base64.b64encode(buffered.getvalue()).decode()
 
 # Cargar y convertir imagen
-logo = Image.open("imagenes/icon3.png").convert("RGBA").resize((90, 90))
+logo = Image.open("imagenes/icon3.png").convert("RGBA")
 logo_base64 = image_to_base64(logo)
 
 # Encabezado
