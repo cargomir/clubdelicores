@@ -24,7 +24,7 @@ col1, col2 = st.columns([1, 5])  # mantener buen ancho para el logo
 with col1:
     st.markdown(
         f"""
-        <div style='display: flex; align-items: center; justify-content: flex-start; margin-left: 0px; margin-top: 30px;'>
+        <div style='display: flex; align-items: center; justify-content: flex-start; margin-top: 30px;'>
             <img src='data:image/png;base64,{logo_base64}' width='90'>
         </div>
         """,
@@ -33,7 +33,7 @@ with col1:
 
 with col2:
     st.markdown("""
-        <div style='padding-top: 10px; margin-left: -25px; line-height: 1.2; margin-top: 18px; '>
+        <div style='padding-top: 10px; line-height: 1.2; margin-top: 18px; '>
             <div style='font-size: 42px; font-weight: bold; color: black;'>Club de Licores</div>
             <div style='font-size: 28px; color: gray;'>Tu guía de coctelería</div>
         </div>
