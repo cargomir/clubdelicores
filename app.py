@@ -302,5 +302,5 @@ if not recurso_fila.empty:
 
     # Mostrar link si hay texto_enlace + url
     if pd.notna(texto) and pd.notna(url):
-        st.markdown("### Vamos a ponerte un tema")
+        st.markdown("### Déjate sorprender")
         st.markdown(f'<a href="{url}" target="_blank">🎵 {texto}</a>', unsafe_allow_html=True)
