@@ -8,6 +8,19 @@ from io import BytesIO
 
 st.set_page_config(page_title="Club de Licores", page_icon="imagenes/favicon.ico")
 
+# === Color personalizado para la barra lateral ===
+st.markdown(
+    """
+    <style>
+    section[data-testid="stSidebar"] {
+        background-color: #f0f2f6;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
 # === Encabezado ===
 
 # Convertir imagen a base64
@@ -56,7 +69,7 @@ recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
 st.sidebar.title("Opciones")
 
 # === Identificar columnas de licor base ===
-columnas_licor = recetas.columns[8:41] 
+columnas_licor = recetas.columns[8:44] 
 
 # Verificar que haya columnas de licor disponibles
 licores_disponibles = sorted(columnas_licor.tolist()) if not columnas_licor.empty else []
@@ -302,5 +315,5 @@ if not recurso_fila.empty:
 
     # Mostrar link si hay texto_enlace + url
     if pd.notna(texto) and pd.notna(url):
-        st.markdown("### Déjate sorprender")
+        st.markdown("### Déjate Sorprender")
         st.markdown(f'<a href="{url}" target="_blank">🎵 {texto}</a>', unsafe_allow_html=True)
