@@ -8,6 +8,40 @@ from io import BytesIO
 
 st.set_page_config(page_title="Club de Licores", page_icon="imagenes/favicon.ico")
 
+#  === Inyección de estilos adaptativos  === 
+st.markdown("""
+    <style>
+    @media (prefers-color-scheme: dark) {
+        body, .stApp {
+            background-color: #1e1e1e !important;
+            color: #f0f0f0 !important;
+        }
+
+        .stSidebar {
+            background-color: #2a2a2a !important;
+            color: #f0f0f0 !important;
+        }
+
+        .stSidebar .css-1cypcdb, .stSidebar .css-1v3fvcr, .stSidebar .css-qbe2hs {
+            color: #f0f0f0 !important;
+        }
+                         
+        .stRadio > label, .stSelectbox label, .stTextInput label {
+            color: #f0f0f0 !important;
+        }
+
+        .css-1offfwp {
+            color: #f0f0f0 !important;
+        }
+
+        .css-1cpxqw2, .css-1d391kg {
+            background-color: #383838 !important;
+            color: #ffffff !important;
+        }
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # === Color personalizado para la barra lateral ===
 st.markdown(
     """
@@ -47,11 +81,36 @@ with col1:
     )
 
 with col2:
-    st.markdown("""
-        <div style='padding-top: 10px; line-height: 1.2; margin-top: 20px; '>
-            <div style='font-size: 42px; font-weight: bold; color: black;'>Club de Licores</div>
-            <div style='font-size: 28px; color: gray;'>Tu guía de coctelería</div>
+    st.markdown(f"""
+        <div id='encabezado-app' style='padding-top: 10px; line-height: 1.2; margin-top: 20px;'>
+            <div class='titulo-principal'>Club de Licores</div>
+            <div class='subtitulo-principal'>Tu guía de coctelería</div>
         </div>
+
+        <style>
+        @media (prefers-color-scheme: dark) {{
+            .titulo-principal {{
+                font-size: 42px;
+                font-weight: bold;
+                color: white !important;
+            }}
+            .subtitulo-principal {{
+                font-size: 28px;
+                color: #cccccc !important;
+            }}
+        }}
+        @media (prefers-color-scheme: light) {{
+            .titulo-principal {{
+                font-size: 42px;
+                font-weight: bold;
+                color: black !important;
+            }}
+            .subtitulo-principal {{
+                font-size: 28px;
+                color: gray !important;
+            }}
+        }}
+        </style>
     """, unsafe_allow_html=True)
 
 # Línea separadora
