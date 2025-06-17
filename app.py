@@ -129,7 +129,7 @@ st.sidebar.title("Opciones")
 
 # === Identificar columnas de licor base ===
 columnas_licor = recetas.columns[8:46]
-columnas_ingredientes = recetas.columns[48:79]
+columnas_ingredientes = recetas.columns[48:80]
 
 # === Paso 1: Obtener selección actual o default
 licor_actual = st.session_state.get("licor_sel", "Todos")
