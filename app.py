@@ -128,35 +128,69 @@ recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
 st.sidebar.title("Opciones")
 
 # === Identificar columnas de licor base ===
-columnas_licor = recetas.columns[8:46] 
+columnas_licor = recetas.columns[8:46]
+columnas_ingredientes = recetas.columns[48:79]
 
-# Verificar que haya columnas de licor disponibles
-licores_disponibles = sorted(columnas_licor.tolist()) if not columnas_licor.empty else []
+# === Paso 1: Obtener selección actual o default
+licor_actual = st.session_state.get("licor_sel", "Todos")
+ingrediente_actual = st.session_state.get("ingrediente_sel", "Todos")
 
-# Crear selector de licor base
-licor_sel = st.sidebar.selectbox("Filtrar por licor base", ["Todos"] + licores_disponibles + ["Sin Alcohol"])
+# === Paso 2: Filtrar recetas según selección actual
+recetas_filtradas = recetas.copy()
 
-# Aplicar filtro según selección
-if licor_sel == "Todos":
-    recetas_filtradas = recetas
-elif licor_sel == "Sin Alcohol":
-    # Filtro: todas las columnas de licor tienen 0 o NaN
-    recetas_filtradas = recetas[recetas[columnas_licor].fillna(0).sum(axis=1) == 0]
-elif licor_sel in recetas.columns:
-    # Filtro: valor positivo en la columna seleccionada
-    recetas_filtradas = recetas[recetas[licor_sel].fillna(0) > 0]
-else:
-    # Filtro inválido (no debería pasar, pero cubre errores)
-    recetas_filtradas = recetas.iloc[0:0]
+# Aplicar filtro por licor si corresponde
+if licor_actual == "Sin Alcohol":
+    recetas_filtradas = recetas_filtradas[recetas_filtradas[columnas_licor].fillna(0).sum(axis=1) == 0]
+elif licor_actual != "Todos":
+    recetas_filtradas = recetas_filtradas[recetas_filtradas[licor_actual].fillna(0) > 0]
 
-# Obtener cócteles únicos y ordenarlos
-cocteles = sorted(recetas_filtradas["coctel"].dropna().unique())
+# Aplicar filtro por ingrediente si corresponde
+if ingrediente_actual != "Todos":
+    recetas_filtradas = recetas_filtradas[recetas_filtradas[ingrediente_actual].fillna(0) > 0]
 
-# Mantener selección previa si es válida, sino usar primero disponible
+# === Paso 3: Obtener opciones disponibles actualizadas
+licores_disponibles = [
+    col for col in columnas_licor
+    if recetas_filtradas[col].fillna(0).sum() > 0
+]
+ingredientes_disponibles = [
+    col for col in columnas_ingredientes
+    if recetas_filtradas[col].fillna(0).sum() > 0
+]
+
+# === Paso 4: Selectores interdependientes (actualización en orden visual)
+licor_sel = st.sidebar.selectbox(
+    "Filtra por licor base",
+    ["Todos"] + sorted(licores_disponibles) + ["Sin Alcohol"],
+    index=(["Todos"] + sorted(licores_disponibles) + ["Sin Alcohol"]).index(licor_actual)
+    if licor_actual in (["Todos"] + licores_disponibles + ["Sin Alcohol"]) else 0,
+    key="licor_sel"
+)
+
+ingrediente_sel = st.sidebar.selectbox(
+    "Filtra por otro tipo de ingrediente",
+    ["Todos"] + sorted(ingredientes_disponibles),
+    index=(["Todos"] + sorted(ingredientes_disponibles)).index(ingrediente_actual)
+    if ingrediente_actual in (["Todos"] + ingredientes_disponibles) else 0,
+    key="ingrediente_sel"
+)
+
+# === Paso 5: Volver a filtrar con selecciones finales
+recetas_final = recetas.copy()
+
+if st.session_state.licor_sel == "Sin Alcohol":
+    recetas_final = recetas_final[recetas_final[columnas_licor].fillna(0).sum(axis=1) == 0]
+elif st.session_state.licor_sel != "Todos":
+    recetas_final = recetas_final[recetas_final[st.session_state.licor_sel].fillna(0) > 0]
+
+if st.session_state.ingrediente_sel != "Todos":
+    recetas_final = recetas_final[recetas_final[st.session_state.ingrediente_sel].fillna(0) > 0]
+
+# === Paso 6: Selector de cóctel dependiente de ambos
+cocteles = sorted(recetas_final["coctel"].dropna().unique())
 if "coctel_sel" not in st.session_state or st.session_state.coctel_sel not in cocteles:
     st.session_state.coctel_sel = cocteles[0] if cocteles else None
 
-# Mostrar selector de cóctel o advertencia si no hay opciones
 if cocteles:
     coctel_sel = st.sidebar.selectbox(
         "Selecciona un cóctel",
@@ -165,11 +199,26 @@ if cocteles:
         key="coctel_sel"
     )
 else:
+    st.sidebar.warning("No hay cócteles para esa combinación.")
     coctel_sel = None
-    st.sidebar.warning("No hay cócteles para ese licor base.")
 
-# Escoger tipo de cálculo 
-modo = st.sidebar.radio("Tipo de cantidad", ["Cantidad de cócteles", "Volumen total (litros)"])
+# === Selector tipo de cálculo  ===
+
+# Definir el valor predeterminado si se limpió
+modo_por_defecto = "Cantidad de cócteles"
+
+# Recuperar desde session_state si está seteado por el botón
+modo = st.session_state.get("modo_forzado", modo_por_defecto)
+
+# Mostrar el radio sin `key`, pero con valor controlado
+modo = st.sidebar.radio(
+    "Tipo de cantidad",
+    ["Cantidad de cócteles", "Volumen total (litros)"],
+    index=0 if modo == "Cantidad de cócteles" else 1
+)
+
+# Guardar el valor actual del radio si no fue forzado (flujo normal)
+st.session_state["modo_forzado"] = modo
 
 # Escoger unidad de medida según modo
 unidad_opciones = {
@@ -178,17 +227,20 @@ unidad_opciones = {
 }
 
 if modo == "Cantidad de cócteles":
-    unidad_label = st.sidebar.radio("Unidad de medida", list(unidad_opciones.keys()))
+    unidad_label = st.sidebar.radio("Unidad de medida", list(unidad_opciones.keys()),
+        key="unidad_label")
     unidad = unidad_opciones[unidad_label]
 else:
     # Simular un radio con una sola opción seleccionada (Mililitros)
-    unidad_label = st.sidebar.radio("Unidad de medida", ["Mililitros (ml)"], index=0)
+    unidad_label = st.sidebar.radio("Unidad de medida", ["Mililitros (ml)"], index=0,
+    key="unidad_label")
     unidad = "ml"
 
 factor_conversion = 1 if unidad == "ml" else 1 / 30
 
 if modo == "Cantidad de cócteles":
-    cantidad = st.sidebar.number_input("Número de cócteles", min_value=1, value=1)
+    cantidad = st.sidebar.number_input("Número de cócteles", min_value=1, value=1, 
+    key="cantidad")
     volumen_deseado = None
     litros = None
 else:
@@ -197,7 +249,8 @@ else:
         "Litros totales",
         opciones_litros,
         index=1,
-        format_func=lambda x: str(int(x)) if x == int(x) else str(x).replace(".", ",")
+        format_func=lambda x: str(int(x)) if x == int(x) else str(x).replace(".", ","),
+    key="litros"
     )
     cantidad = None
     volumen_deseado = litros * 1000
@@ -214,6 +267,16 @@ if coctel_sel:
 else:
     st.info("Selecciona un cóctel para ver los detalles.")
     st.stop()
+
+# === Botón de limpiar filtros ===
+if st.sidebar.button("Limpiar selección"):
+    # Borrar campos específicos
+    for clave in ["licor_sel", "ingrediente_sel", "coctel_sel", "unidad_label", "cantidad", "litros"]:
+        st.session_state.pop(clave, None)
+
+    # Forzar que vuelva a modo por defecto
+    st.session_state["modo_forzado"] = "Cantidad de cócteles"
+    st.rerun()
 
 # === Filtro receta ===
 fila_receta = recetas[recetas["coctel"] == coctel_sel].iloc[0]
@@ -253,6 +316,14 @@ st.sidebar.markdown(f"""
     <p>Con una interfaz simple y amigable, esta app intenta contribuir al mundo de la coctelería entregando información práctica y didáctica, pero a la vez creativa y culturalmente enriquecida.</p>
     <p>Actualmente incluye <b>{total_cocteles}</b> recetas de cócteles.</p>
     <p>Desarrollada por Carlos Andrés González Miranda (Santiago de Chile, 2025).</p>
+    <p style="margin-top:10px;">
+        <a href="mailto:clubdelicores@gmail.com" target="_blank" style="text-decoration: none;">
+            <img src="https://img.icons8.com/color/24/000000/gmail-new.png" style="vertical-align: middle;"/> clubdelicores@gmail.com
+        </a><br>
+        <a href="https://instagram.com/clubdelicores" target="_blank" style="text-decoration: none;">
+            <img src="https://img.icons8.com/fluency/24/000000/instagram-new.png" style="vertical-align: middle;"/> @clubdelicores
+        </a>
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
