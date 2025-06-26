@@ -3,6 +3,7 @@ import pandas as pd
 from PIL import Image
 import base64
 from io import BytesIO
+import re
 
 # === Configuración de la página ===
 
@@ -124,83 +125,113 @@ jarabes = pd.read_excel("data/recetas.xlsx", sheet_name="jarabe")
 recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
 
 # === Sidebar ===
-
 st.sidebar.title("Opciones")
 
-# === Identificar columnas de licor base ===
+# === Identificar columnas ===
 columnas_licor = recetas.columns[8:46]
-columnas_ingredientes = recetas.columns[48:80]
 
-# === Paso 1: Obtener selección actual o default
-licor_actual = st.session_state.get("licor_sel", "Todos")
-ingrediente_actual = st.session_state.get("ingrediente_sel", "Todos")
+# === Paso 1: Aplicar filtro por palabra clave ===
+# El valor se tomará más abajo, pero se define aquí si ya existe en el estado
+palabra_clave = st.session_state.get("palabra_clave_input", "").strip().lower()
 
-# === Paso 2: Filtrar recetas según selección actual
 recetas_filtradas = recetas.copy()
+if palabra_clave:
+    def cocteles_con_palabra(df, col_coctel="coctel"):
+        df = df.copy()
+        df = df.fillna("").astype(str)
+        df["texto_total"] = df.drop(columns=[col_coctel]).agg(" ".join, axis=1).str.lower()
+        return set(df[df["texto_total"].str.contains(palabra_clave)][col_coctel])
+    
+    def cocteles_con_palabra_en_recetas(df, col_coctel="coctel"):
+        df = df.copy()
+        df = df.fillna("").astype(str)
 
-# Aplicar filtro por licor si corresponde
-if licor_actual == "Sin Alcohol":
-    recetas_filtradas = recetas_filtradas[recetas_filtradas[columnas_licor].fillna(0).sum(axis=1) == 0]
-elif licor_actual != "Todos":
-    recetas_filtradas = recetas_filtradas[recetas_filtradas[licor_actual].fillna(0) > 0]
+        texto_filas = df.drop(columns=[col_coctel]).agg(" ".join, axis=1).str.lower()
+        columnas_con_match = [col for col in df.columns if re.search(re.escape(palabra_clave), col.lower())]
 
-# Aplicar filtro por ingrediente si corresponde
-if ingrediente_actual != "Todos":
-    recetas_filtradas = recetas_filtradas[recetas_filtradas[ingrediente_actual].fillna(0) > 0]
+        desde_contenido = df[texto_filas.str.contains(re.escape(palabra_clave))][col_coctel]
 
-# === Paso 3: Obtener opciones disponibles actualizadas
+        if columnas_con_match:
+            cols_numericas = df[columnas_con_match].apply(pd.to_numeric, errors='coerce').fillna(0)
+            desde_columnas = df[cols_numericas.sum(axis=1) > 0][col_coctel]
+        else:
+            desde_columnas = pd.Series([], dtype=str)
+
+        return set(desde_contenido) | set(desde_columnas)
+
+    cocteles_validos = sorted(set(
+    cocteles_con_palabra_en_recetas(recetas) |
+    cocteles_con_palabra(complementos) |
+    cocteles_con_palabra(recursos)
+    ))
+
+    recetas_filtradas = recetas[recetas["coctel"].isin(cocteles_validos)]
+    complementos_filtrados = complementos[complementos["coctel"].isin(cocteles_validos)]
+    recursos_filtrados = recursos[recursos["coctel"].isin(cocteles_validos)]
+else:
+    complementos_filtrados = complementos
+    recursos_filtrados = recursos
+
+# === Paso 2: Obtener opciones disponibles actualizadas ===
 licores_disponibles = [
     col for col in columnas_licor
     if recetas_filtradas[col].fillna(0).sum() > 0
 ]
-ingredientes_disponibles = [
-    col for col in columnas_ingredientes
-    if recetas_filtradas[col].fillna(0).sum() > 0
-]
 
-# === Paso 4: Selectores interdependientes (actualización en orden visual)
+# === Paso 3: Obtener selección actual o default ===
+licor_actual = st.session_state.get("licor_sel", "Todos")
+
+# === Paso 4: Selectores de licor e ingrediente ===
+# Verificamos si hay cócteles sin alcohol en las recetas filtradas
+hay_sin_alcohol = recetas_filtradas[columnas_licor].fillna(0).sum(axis=1).eq(0).any()
+
+# Armamos el selector dinámicamente
+opciones_licor = ["Todos"] + sorted(licores_disponibles)
+if hay_sin_alcohol and "Sin Alcohol" not in opciones_licor:
+    opciones_licor.append("Sin Alcohol")
+
 licor_sel = st.sidebar.selectbox(
     "Filtra por licor base",
-    ["Todos"] + sorted(licores_disponibles) + ["Sin Alcohol"],
-    index=(["Todos"] + sorted(licores_disponibles) + ["Sin Alcohol"]).index(licor_actual)
-    if licor_actual in (["Todos"] + licores_disponibles + ["Sin Alcohol"]) else 0,
+    opciones_licor,
+    index=opciones_licor.index(licor_actual)
+    if licor_actual in opciones_licor else 0,
     key="licor_sel"
 )
 
-ingrediente_sel = st.sidebar.selectbox(
-    "Filtra por otro tipo de ingrediente",
-    ["Todos"] + sorted(ingredientes_disponibles),
-    index=(["Todos"] + sorted(ingredientes_disponibles)).index(ingrediente_actual)
-    if ingrediente_actual in (["Todos"] + ingredientes_disponibles) else 0,
-    key="ingrediente_sel"
-)
-
-# === Paso 5: Volver a filtrar con selecciones finales
-recetas_final = recetas.copy()
+# === Paso 5: Aplicar filtro por licor ===
+recetas_final = recetas_filtradas.copy()
 
 if st.session_state.licor_sel == "Sin Alcohol":
     recetas_final = recetas_final[recetas_final[columnas_licor].fillna(0).sum(axis=1) == 0]
 elif st.session_state.licor_sel != "Todos":
     recetas_final = recetas_final[recetas_final[st.session_state.licor_sel].fillna(0) > 0]
 
-if st.session_state.ingrediente_sel != "Todos":
-    recetas_final = recetas_final[recetas_final[st.session_state.ingrediente_sel].fillna(0) > 0]
+# === Paso 6: Mostrar campo de búsqueda justo antes del selector de cóctel ===
+palabra_clave_input = st.sidebar.text_input(
+    "Buscar por palabra clave",
+    value=st.session_state.get("palabra_clave_input", ""),
+    key="palabra_clave_input",
+    placeholder="Ej: jengibre, limón, Borges",
+    help="Escribe una palabra y presiona Enter para buscar"
+)
 
-# === Paso 6: Selector de cóctel dependiente de ambos
+# === Paso 7: Selector de cóctel dependiente ===
 cocteles = sorted(recetas_final["coctel"].dropna().unique())
-if "coctel_sel" not in st.session_state or st.session_state.coctel_sel not in cocteles:
-    st.session_state.coctel_sel = cocteles[0] if cocteles else None
 
 if cocteles:
     coctel_sel = st.sidebar.selectbox(
         "Selecciona un cóctel",
         cocteles,
-        index=cocteles.index(st.session_state.coctel_sel),
+        index=cocteles.index(
+            st.session_state.coctel_sel
+        ) if "coctel_sel" in st.session_state and st.session_state.coctel_sel in cocteles else 0,
         key="coctel_sel"
     )
 else:
-    st.sidebar.warning("No hay cócteles para esa combinación.")
-    coctel_sel = None
+    if "coctel_sel" in st.session_state:
+        del st.session_state["coctel_sel"]
+    st.sidebar.warning("No hay cócteles para esa búsqueda, inténtalo otra vez.")
+    st.stop()
 
 # === Selector tipo de cálculo  ===
 
@@ -268,22 +299,21 @@ else:
     st.info("Selecciona un cóctel para ver los detalles.")
     st.stop()
 
-# === Botón de limpiar filtros ===
-if st.sidebar.button("Limpiar selección"):
-    # Borrar campos específicos
-    for clave in ["licor_sel", "ingrediente_sel", "coctel_sel", "unidad_label", "cantidad", "litros"]:
-        st.session_state.pop(clave, None)
-
-    # Forzar que vuelva a modo por defecto
-    st.session_state["modo_forzado"] = "Cantidad de cócteles"
-    st.rerun()
-
-# === Filtro receta ===
-fila_receta = recetas[recetas["coctel"] == coctel_sel].iloc[0]
+# === Obtener ingredientes de la receta seleccionada ===
 ingredientes = fila_receta.drop([
     "coctel", "vaso", "tecnica", "capacidad_vaso_sin_hielo",
-    "cantidad_hielo", "hielo", "capacidad_vaso_con_hielo", "volumen"])
+    "cantidad_hielo", "hielo", "capacidad_vaso_con_hielo", "volumen"
+])
 ingredientes = ingredientes[ingredientes.notna() & (ingredientes != 0)]
+
+# === Botón de limpiar filtros ===
+CAMPOS_RESET = ["licor_sel", "coctel_sel", "unidad_label", "cantidad", "litros", "palabra_clave_input"]
+
+if st.sidebar.button("Limpiar selección"):
+    for clave in CAMPOS_RESET:
+        st.session_state.pop(clave, None)
+    st.session_state["modo_forzado"] = "Cantidad de cócteles"
+    st.rerun()
 
 # Cálculo de volumen y factor
 # 1. Obtener volumen base y volumen deseado
