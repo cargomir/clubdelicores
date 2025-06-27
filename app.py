@@ -4,6 +4,7 @@ from PIL import Image
 import base64
 from io import BytesIO
 import re
+import random
 
 # === Configuración de la página ===
 
@@ -224,7 +225,7 @@ if cocteles:
         cocteles,
         index=cocteles.index(
             st.session_state.coctel_sel
-        ) if "coctel_sel" in st.session_state and st.session_state.coctel_sel in cocteles else 0,
+        ) if "coctel_sel" in st.session_state and st.session_state.coctel_sel in cocteles else cocteles.index(random.choice(cocteles)),
         key="coctel_sel"
     )
 else:
