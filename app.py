@@ -418,7 +418,8 @@ for ing in ingredientes_ajustados.index:
 
 jarabes_columnas = [
     "Jarabe Simple", "Jarabe de Canela", "Jarabe de Jengibre",
-    "Jarabe de Menta", "Jarabe de Cedrón", "Jarabe de Romero", "Jarabe de Jamaica", "Jarabe de Miel"
+    "Jarabe de Menta", "Jarabe de Cedrón", "Jarabe de Romero", 
+    "Jarabe de Jamaica", "Jarabe de Miel", "Jarabe de Frambuesa"
 
 ]
 
