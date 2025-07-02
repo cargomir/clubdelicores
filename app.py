@@ -162,7 +162,7 @@ if palabra_clave:
 
     cocteles_validos = sorted(set(
     cocteles_con_palabra_en_recetas(recetas) |
-    cocteles_con_palabra(complementos) |
+    cocteles_con_palabra_en_recetas(complementos) |
     cocteles_con_palabra(recursos)
     ))
 
