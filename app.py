@@ -388,7 +388,17 @@ ingredientes_a_gusto = {
 ingredientes_gotas = {
     "Amargo de Angostura": "Amargo de Angostura",
     "Salsa Inglesa": "Salsa Inglesa",
-    "Salsa Tabasco": "Salsa Tabasco"
+    "Salsa Tabasco": "Salsa Tabasco",
+    "Agua": "agua"
+}
+
+ingredientes_unidades = {
+    "Terrón de Azúcar": "terrón de azúcar",
+    "Arándanos": "arándanos"
+}
+
+ingredientes_cucharadas = {
+    "Azúcar": "azúcar"
 }
 
 for ing in ingredientes_ajustados.index:
@@ -401,7 +411,19 @@ for ing in ingredientes_ajustados.index:
 
     # Ingredientes que se agregan en gotas
     elif ing in ingredientes_gotas:
-        st.write(f"- Agregar algunas gotas de {ingredientes_gotas[ing]}")
+        st.write(f"- Algunas gotas de {ingredientes_gotas[ing]}")
+    
+    # Ingredientes que se agregan en unidades
+    elif ing in ingredientes_unidades:
+        cantidad = int(round(val_ajustado))
+        nombre_u = ingredientes_unidades[ing]
+        st.write(f"- {cantidad} {nombre_u}")
+    
+    # Ingredientes que se agregan en cucharadas
+    elif ing in ingredientes_cucharadas:
+        cantidad = int(round(val_ajustado))
+        nombre_c = ingredientes_cucharadas[ing]
+        st.write(f"- {cantidad} cucharadas de {nombre_c}")
 
     # Ingredientes con cantidad específica
     else:
@@ -420,7 +442,6 @@ jarabes_columnas = [
     "Jarabe Simple", "Jarabe de Canela", "Jarabe de Jengibre",
     "Jarabe de Menta", "Jarabe de Cedrón", "Jarabe de Romero", 
     "Jarabe de Jamaica", "Jarabe de Miel", "Jarabe de Frambuesa"
-
 ]
 
 # Revisa si alguno de los jarabes tiene un valor mayor a 0
