@@ -327,11 +327,43 @@ else:
 # 2. Calcular factor de escalado
 factor = volumen_deseado / volumen_base
 
-# 3. Calcular ingredientes escalados en ml
+# 3. Calcular ingredientes escalados en ml (todos los ingredientes, sin excluir)
 ingredientes_escalados_ml = ingredientes * factor
 
-# 4. Convertir a la unidad final (ml u oz)
-ingredientes_ajustados = ingredientes_escalados_ml * factor_conversion
+ingredientes_a_gusto = {
+    "Sal": "sal",
+    "Sal de Apio": "sal de apio",
+    "Pimienta": "pimienta",
+    "Canela": "canela",
+    "Nuez Moscada": "nuez moscada",
+    "Azúcar Flor": "azúcar flor",
+    "Harina Tostada": "harina tostada"
+}
+
+ingredientes_gotas = {
+    "Amargo de Angostura": "Amargo de Angostura",
+    "Salsa Inglesa": "Salsa Inglesa",
+    "Salsa Tabasco": "Salsa Tabasco",
+    "Agua": "agua"
+}
+
+ingredientes_unidades = {
+    "Terrón de Azúcar": "terrón de azúcar",
+    "Arándanos": "arándanos", 
+    "Hojas de Menta": "hojas de menta"
+}
+
+ingredientes_cucharadas = {
+    "Azúcar": "azúcar"
+}
+
+# 4. Convertir a la unidad final (solo líquidos u otros convertibles)
+ingredientes_a_excluir = set(ingredientes_a_gusto) | set(ingredientes_gotas) | set(ingredientes_unidades) | set(ingredientes_cucharadas)
+ingredientes_convertibles = [ing for ing in ingredientes.index if ing not in ingredientes_a_excluir]
+
+ingredientes_ajustados = ingredientes_escalados_ml.copy()
+for ing in ingredientes_convertibles:
+    ingredientes_ajustados[ing] *= factor_conversion
 
 # === Datos de técnica ===
 tecnica_info = tecnicas[tecnicas["tecnica"] == fila_receta["tecnica"]].iloc[0]
@@ -374,32 +406,6 @@ else:
 # === Sección de ingredientes ===
 
 st.markdown("### Ingredientes")
-
-ingredientes_a_gusto = {
-    "Sal": "sal",
-    "Sal de Apio": "sal de apio",
-    "Pimienta": "pimienta",
-    "Canela": "canela",
-    "Nuez Moscada": "nuez moscada",
-    "Azúcar Flor": "azúcar flor",
-    "Harina Tostada": "harina tostada"
-}
-
-ingredientes_gotas = {
-    "Amargo de Angostura": "Amargo de Angostura",
-    "Salsa Inglesa": "Salsa Inglesa",
-    "Salsa Tabasco": "Salsa Tabasco",
-    "Agua": "agua"
-}
-
-ingredientes_unidades = {
-    "Terrón de Azúcar": "terrón de azúcar",
-    "Arándanos": "arándanos"
-}
-
-ingredientes_cucharadas = {
-    "Azúcar": "azúcar"
-}
 
 for ing in ingredientes_ajustados.index:
     val_ajustado = ingredientes_ajustados[ing]
