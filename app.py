@@ -129,7 +129,7 @@ recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
 st.sidebar.title("Opciones")
 
 # === Identificar columnas ===
-columnas_licor = recetas.columns[8:46]
+columnas_licor = recetas.columns[8:47]
 
 # === Paso 1: Aplicar filtro por palabra clave ===
 # El valor se tomará más abajo, pero se define aquí si ya existe en el estado
@@ -335,9 +335,7 @@ ingredientes_a_gusto = {
     "Sal de Apio": "sal de apio",
     "Pimienta": "pimienta",
     "Canela": "canela",
-    "Nuez Moscada": "nuez moscada",
-    "Azúcar Flor": "azúcar flor",
-    "Harina Tostada": "harina tostada"
+    "Nuez Moscada": "nuez moscada"
 }
 
 ingredientes_gotas = {
@@ -349,12 +347,21 @@ ingredientes_gotas = {
 
 ingredientes_unidades = {
     "Terrón de Azúcar": "terrón de azúcar",
-    "Arándanos": "arándanos", 
-    "Hojas de Menta": "hojas de menta"
+    "Hojas de Menta": "hojas de menta",
+    "Hojas de Albahaca": "hojas de albahaca",
+    "Limón Sutil Trozado": "limón sutil trozado",
+    "Trozos de Pepino": "trozos de pepino",
+    "Frutillas Trozadas": "frutillas trozadas",
+    "Moras": "moras",
+    "Frambuesas": "frambuesas",
+    "Arándanos": "arándanos",
+    "Uvas": "uvas"
 }
 
 ingredientes_cucharadas = {
-    "Azúcar": "azúcar"
+    "Azúcar": "azúcar",
+    "Azúcar Flor": "azúcar flor",
+    "Harina Tostada": "harina tostada"
 }
 
 # 4. Convertir a la unidad final (solo líquidos u otros convertibles)
@@ -429,7 +436,7 @@ for ing in ingredientes_ajustados.index:
     elif ing in ingredientes_cucharadas:
         cantidad = int(round(val_ajustado))
         nombre_c = ingredientes_cucharadas[ing]
-        st.write(f"- {cantidad} cucharadas de {nombre_c}")
+        st.write(f"- {cantidad} cucharadita(s) de {nombre_c}")
 
     # Ingredientes con cantidad específica
     else:
