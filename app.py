@@ -129,7 +129,7 @@ recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
 st.sidebar.title("Opciones")
 
 # === Identificar columnas ===
-columnas_licor = recetas.columns[8:47]
+columnas_licor = recetas.columns[8:48]
 
 # === Paso 1: Aplicar filtro por palabra clave ===
 # El valor se tomará más abajo, pero se define aquí si ya existe en el estado
@@ -342,7 +342,8 @@ ingredientes_gotas = {
     "Amargo de Angostura": "Amargo de Angostura",
     "Salsa Inglesa": "Salsa Inglesa",
     "Salsa Tabasco": "Salsa Tabasco",
-    "Agua": "agua"
+    "Agua": "agua",
+    "Whisky o Brandy": "whisky o brandy"
 }
 
 ingredientes_unidades = {
@@ -355,13 +356,18 @@ ingredientes_unidades = {
     "Moras": "moras",
     "Frambuesas": "frambuesas",
     "Arándanos": "arándanos",
-    "Uvas": "uvas"
+    "Uvas": "uvas",
+    "Rama de Canela": "rama de canela",
+    "Naranja en Rodajas": "naranja(s) en rodajas",	
+    "Manzana en Cubos": "manzana(s) en cubos",
+    "Huevo": "huevo entero fresco"
 }
 
 ingredientes_cucharadas = {
     "Azúcar": "azúcar",
-    "Azúcar Flor": "azúcar flor",
-    "Harina Tostada": "harina tostada"
+    "Azúcar Flor": "azúcar flor (glas)",
+    "Harina Tostada": "harina tostada",
+    "Cacao": "cacao en polvo sin azúcar"
 }
 
 # 4. Convertir a la unidad final (solo líquidos u otros convertibles)
