@@ -487,6 +487,10 @@ if jarabes_presentes:
             st.markdown(f"**{j}**")
             st.write(fila_jarabe["preparación"].values[0])
 
+# === Técnica de preparación ===
+st.markdown("### Técnica")
+st.write(f"**{fila_receta['tecnica']} ({tecnica_info['nombre_español']})** – {tecnica_info['descripción']}")
+
 # === Información sobre el hielo ===
 hielo = fila_receta["hielo"]
 if pd.notna(hielo) and str(hielo).strip().lower() in ["Sí", "Si", "sí", "si"]:
@@ -495,10 +499,6 @@ if pd.notna(hielo) and str(hielo).strip().lower() in ["Sí", "Si", "sí", "si"]:
 else:
     st.markdown("### Hielo")
     st.write("🚫 Servir sin hielo.")
-
-# === Técnica de preparación ===
-st.markdown("### Técnica de preparación")
-st.write(f"**{fila_receta['tecnica']} ({tecnica_info['nombre_español']})** – {tecnica_info['descripción']}")
 
 # === Cristalería sugerida ===
 st.markdown("### Cristalería sugerida")
