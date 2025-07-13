@@ -335,15 +335,15 @@ ingredientes_a_gusto = {
     "Sal de Apio": "sal de apio",
     "Pimienta": "pimienta",
     "Canela": "canela",
-    "Nuez Moscada": "nuez moscada"
+    "Nuez Moscada": "nuez moscada",
+    "Whisky o Brandy": "whisky o brandy"
 }
 
 ingredientes_gotas = {
     "Amargo de Angostura": "Amargo de Angostura",
     "Salsa Inglesa": "Salsa Inglesa",
     "Salsa Tabasco": "Salsa Tabasco",
-    "Agua": "agua",
-    "Whisky o Brandy": "whisky o brandy"
+    "Agua": "agua"    
 }
 
 ingredientes_unidades = {
