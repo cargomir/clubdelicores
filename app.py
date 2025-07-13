@@ -362,7 +362,7 @@ ingredientes_unidades = {
     "Rama de Canela": "rama de canela",
     "Naranja en Rodajas": "naranja(s) en rodajas",	
     "Manzana en Cubos": "manzana(s) en cubos",
-    "Huevo": "huevo entero fresco"
+    "Huevo": "huevo(s)"
 }
 
 ingredientes_cucharadas = {
@@ -457,6 +457,17 @@ for ing in ingredientes_ajustados.index:
 
         st.write(f"- {ing}: {cantidad} {unidad}")
 
+# === Sección de información para la preparación (si hay) ===
+recurso_fila = recursos[recursos["coctel"] == coctel_sel]
+
+if not recurso_fila.empty:
+    fila = recurso_fila.iloc[0]
+    
+    # Mostrar preparación (si existe)
+    if pd.notna(fila.get("preparacion")):
+        st.markdown("### Preparación")
+        st.markdown(fila["preparacion"])
+
 # === Sección de jarabes utilizados (si hay) ===
 
 jarabes_columnas = [
@@ -505,12 +516,10 @@ if not fila_complementos.empty:
 
 # === Sección recursos asociados (si existen) ===
 
-recurso_fila = recursos[recursos["coctel"] == coctel_sel]
-
 if not recurso_fila.empty:
     fila = recurso_fila.iloc[0]
-
-     # Mostrar observaciones (si existen)
+    
+    # Mostrar observaciones (si existen)
     if pd.notna(fila.get("observaciones")):
         st.markdown("### Observaciones")
         st.markdown(fila["observaciones"])
