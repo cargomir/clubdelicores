@@ -129,7 +129,7 @@ recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
 st.sidebar.title("Opciones")
 
 # === Identificar columnas ===
-columnas_licor = recetas.columns[8:48]
+columnas_licor = recetas.columns[8:49]
 
 # === Paso 1: Aplicar filtro por palabra clave ===
 # El valor se tomará más abajo, pero se define aquí si ya existe en el estado
@@ -336,14 +336,16 @@ ingredientes_a_gusto = {
     "Pimienta": "pimienta",
     "Canela": "canela",
     "Nuez Moscada": "nuez moscada",
-    "Whisky o Brandy": "whisky o brandy"
+    "Whisky o Brandy": "whisky o brandy",
+    "Leche Condensada": "leche condensada"
 }
 
 ingredientes_gotas = {
     "Amargo de Angostura": "Amargo de Angostura",
     "Salsa Inglesa": "Salsa Inglesa",
     "Salsa Tabasco": "Salsa Tabasco",
-    "Agua": "agua"    
+    "Agua": "agua",
+    "Esencia de Vainilla": "esencia de vainilla"
 }
 
 ingredientes_unidades = {
