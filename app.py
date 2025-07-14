@@ -354,6 +354,7 @@ ingredientes_unidades = {
     "Hojas de Albahaca": "hojas de albahaca",
     "Limón Sutil Trozado": "limón sutil trozado",
     "Trozos de Pepino": "trozos de pepino",
+    "Trozos de Jengibre": "trozos de jengibre",
     "Frutillas Trozadas": "frutillas trozadas",
     "Moras": "moras",
     "Frambuesas": "frambuesas",
@@ -362,14 +363,24 @@ ingredientes_unidades = {
     "Rama de Canela": "rama de canela",
     "Naranja en Rodajas": "naranja(s) en rodajas",	
     "Manzana en Cubos": "manzana(s) en cubos",
-    "Huevo": "huevo(s)"
+    "Huevo": "huevo(s)",
+    "Melón Tuna": "melón tuna entero"
+}
+
+ingredientes_cucharaditas = {
+    "Azúcar Flor": "azúcar flor (glas)",
+    "Harina Tostada": "harina tostada",
+    "Cacao": "cacao en polvo sin azúcar"
 }
 
 ingredientes_cucharadas = {
     "Azúcar": "azúcar",
-    "Azúcar Flor": "azúcar flor (glas)",
-    "Harina Tostada": "harina tostada",
-    "Cacao": "cacao en polvo sin azúcar"
+}
+
+ingredientes_gramos = {
+    "Chirimoya": "chirimoya",
+    "Frutillas": "frutillas",
+    "Mango": "mango maduro"
 }
 
 # 4. Convertir a la unidad final (solo líquidos u otros convertibles)
@@ -436,15 +447,27 @@ for ing in ingredientes_ajustados.index:
     
     # Ingredientes que se agregan en unidades
     elif ing in ingredientes_unidades:
-        cantidad = int(round(val_ajustado))
+        cantidad_u = int(round(val_ajustado))
         nombre_u = ingredientes_unidades[ing]
-        st.write(f"- {cantidad} {nombre_u}")
+        st.write(f"- {cantidad_u} {nombre_u}")
     
+    # Ingredientes que se agregan en cucharaditas
+    elif ing in ingredientes_cucharaditas:
+        cantidad_c = int(round(val_ajustado))
+        nombre_c = ingredientes_cucharaditas[ing]
+        st.write(f"- {cantidad_c} cucharadita(s) de {nombre_c}")
+
     # Ingredientes que se agregan en cucharadas
     elif ing in ingredientes_cucharadas:
-        cantidad = int(round(val_ajustado))
-        nombre_c = ingredientes_cucharadas[ing]
-        st.write(f"- {cantidad} cucharadita(s) de {nombre_c}")
+        cantidad_c2 = int(round(val_ajustado))
+        nombre_c2 = ingredientes_cucharadas[ing]
+        st.write(f"- {cantidad_c2} cucharada(s) de {nombre_c2}")
+
+    # Ingredientes que se agregan en gramos
+    elif ing in ingredientes_gramos:
+        cantidad_g = int(round(val_ajustado))
+        nombre_g = ingredientes_gramos[ing]
+        st.write(f"- {cantidad_g} g de {nombre_g}")
 
     # Ingredientes con cantidad específica
     else:
@@ -455,7 +478,7 @@ for ing in ingredientes_ajustados.index:
             if cantidad.is_integer():
                 cantidad = int(cantidad)  # Muestra como 1 en lugar de 1.0 si es entero
 
-        st.write(f"- {ing}: {cantidad} {unidad}")
+        st.write(f"- {cantidad} {unidad} de {ing}")
 
 # === Sección de información para la preparación (si hay) ===
 recurso_fila = recursos[recursos["coctel"] == coctel_sel]
