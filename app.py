@@ -129,10 +129,9 @@ recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
 st.sidebar.title("Opciones")
 
 # === Identificar columnas ===
-columnas_licor = recetas.columns[8:49]
+columnas_licor = recetas.columns[8:50]
 
 # === Paso 1: Aplicar filtro por palabra clave ===
-# El valor se tomará más abajo, pero se define aquí si ya existe en el estado
 palabra_clave = st.session_state.get("palabra_clave_input", "").strip().lower()
 
 recetas_filtradas = recetas.copy()
@@ -141,16 +140,21 @@ if palabra_clave:
         df = df.copy()
         df = df.fillna("").astype(str)
         df["texto_total"] = df.drop(columns=[col_coctel]).agg(" ".join, axis=1).str.lower()
-        return set(df[df["texto_total"].str.contains(palabra_clave)][col_coctel])
+        # Coincidencia también en el nombre del cóctel
+        coincidencias_nombre = df[df[col_coctel].str.lower().str.contains(palabra_clave)][col_coctel]
+        coincidencias_texto = df[df["texto_total"].str.contains(palabra_clave)][col_coctel]
+        return set(coincidencias_nombre) | set(coincidencias_texto)
     
     def cocteles_con_palabra_en_recetas(df, col_coctel="coctel"):
         df = df.copy()
         df = df.fillna("").astype(str)
-
         texto_filas = df.drop(columns=[col_coctel]).agg(" ".join, axis=1).str.lower()
-        columnas_con_match = [col for col in df.columns if re.search(re.escape(palabra_clave), col.lower())]
 
-        desde_contenido = df[texto_filas.str.contains(re.escape(palabra_clave))][col_coctel]
+        # Coincidencia en columnas (nombres de columna)
+        columnas_con_match = [col for col in df.columns if palabra_clave in col.lower()]
+
+        desde_texto = df[texto_filas.str.contains(palabra_clave)][col_coctel]
+        desde_nombre = df[df[col_coctel].str.lower().str.contains(palabra_clave)][col_coctel]
 
         if columnas_con_match:
             cols_numericas = df[columnas_con_match].apply(pd.to_numeric, errors='coerce').fillna(0)
@@ -158,17 +162,20 @@ if palabra_clave:
         else:
             desde_columnas = pd.Series([], dtype=str)
 
-        return set(desde_contenido) | set(desde_columnas)
+        return set(desde_texto) | set(desde_nombre) | set(desde_columnas)
 
+    # Unimos los resultados de todas las fuentes
     cocteles_validos = sorted(set(
-    cocteles_con_palabra_en_recetas(recetas) |
-    cocteles_con_palabra_en_recetas(complementos) |
-    cocteles_con_palabra(recursos)
+        cocteles_con_palabra_en_recetas(recetas) |
+        cocteles_con_palabra_en_recetas(complementos) |
+        cocteles_con_palabra(recursos)
     ))
 
+    # Filtrar
     recetas_filtradas = recetas[recetas["coctel"].isin(cocteles_validos)]
     complementos_filtrados = complementos[complementos["coctel"].isin(cocteles_validos)]
     recursos_filtrados = recursos[recursos["coctel"].isin(cocteles_validos)]
+
 else:
     complementos_filtrados = complementos
     recursos_filtrados = recursos
@@ -207,7 +214,7 @@ if st.session_state.licor_sel == "Sin Alcohol":
 elif st.session_state.licor_sel != "Todos":
     recetas_final = recetas_final[recetas_final[st.session_state.licor_sel].fillna(0) > 0]
 
-# === Paso 6: Mostrar campo de búsqueda justo antes del selector de cóctel ===
+# === Paso 6: Mostrar campo de búsqueda por palabra clave ===
 palabra_clave_input = st.sidebar.text_input(
     "Buscar por palabra clave",
     value=st.session_state.get("palabra_clave_input", ""),
@@ -364,7 +371,7 @@ ingredientes_unidades = {
     "Naranja en Rodajas": "naranja(s) en rodajas",	
     "Manzana en Cubos": "manzana(s) en cubos",
     "Huevo": "huevo(s)",
-    "Melón Tuna": "melón tuna entero"
+    "Melón": "melón tuna entero"
 }
 
 ingredientes_cucharaditas = {
