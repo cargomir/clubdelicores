@@ -371,7 +371,8 @@ ingredientes_unidades = {
     "Naranja en Rodajas": "naranja(s) en rodajas",	
     "Manzana en Cubos": "manzana(s) en cubos",
     "Huevo": "huevo(s)",
-    "Melón": "melón tuna entero"
+    "Melón": "melón tuna entero",
+    "Durazno Trozado": "durazno(s) en cubos"
 }
 
 ingredientes_cucharaditas = {
