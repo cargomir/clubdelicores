@@ -504,7 +504,8 @@ if not recurso_fila.empty:
 jarabes_columnas = [
     "Jarabe Simple", "Jarabe de Canela", "Jarabe de Jengibre",
     "Jarabe de Menta", "Jarabe de Cedrón", "Jarabe de Romero", 
-    "Jarabe de Jamaica", "Jarabe de Miel", "Jarabe de Frambuesa"
+    "Jarabe de Jamaica", "Jarabe de Miel", "Jarabe de Frambuesa",
+    "Jarabe de Butterfly Pea y Jengibre"
 ]
 
 # Revisa si alguno de los jarabes tiene un valor mayor a 0
