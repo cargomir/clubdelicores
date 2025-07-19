@@ -554,7 +554,7 @@ if not recurso_fila.empty:
     # Mostrar observaciones (si existen)
     if pd.notna(fila.get("observaciones")):
         st.markdown("### Observaciones")
-        st.markdown(fila["observaciones"])
+        st.markdown(f"📝 {fila['observaciones']}")
 
     # Verificar si hay al menos un recurso adicional
     hay_recursos = any([
