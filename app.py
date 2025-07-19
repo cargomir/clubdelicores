@@ -516,12 +516,12 @@ if jarabes_presentes:
     for j in jarabes_presentes:
         fila_jarabe = jarabes[jarabes["jarabe"] == j]
         if not fila_jarabe.empty:
-            st.markdown(f"**{j}**")
+            st.markdown(f"**🥄 {j}**")
             st.write(fila_jarabe["preparación"].values[0])
 
 # === Técnica de preparación ===
 st.markdown("### Técnica")
-st.write(f"**{fila_receta['tecnica']} ({tecnica_info['nombre_español']})** – {tecnica_info['descripción']}")
+st.write(f"🛠️ **{fila_receta['tecnica']} ({tecnica_info['nombre_español']})** – {tecnica_info['descripción']}")
 
 # === Información sobre el hielo ===
 hielo = fila_receta["hielo"]
@@ -534,7 +534,7 @@ else:
 
 # === Cristalería sugerida ===
 st.markdown("### Cristalería sugerida")
-st.write(f"{fila_receta['vaso']} – {int(fila_receta['capacidad_vaso_sin_hielo'])} ml")
+st.write(f"🥂 {fila_receta['vaso']} – {int(fila_receta['capacidad_vaso_sin_hielo'])} ml")
 
 # === Decoración sugerida (complementos con valor 1) ===
 fila_complementos = complementos[complementos["coctel"] == coctel_sel]
@@ -544,7 +544,7 @@ if not fila_complementos.empty:
     
     if decoraciones:
         st.markdown("### Garnitura (garnish)")
-        st.write("Se sugiere acompañar con: " + ", ".join(decoraciones))
+        st.write("🌿 Acompañar con: " + ", ".join(decoraciones))
 
 # === Sección recursos asociados (si existen) ===
 
