@@ -581,9 +581,9 @@ if not recurso_fila.empty:
         # Mostrar enlace musical (si existe)
         if pd.notna(fila.get("texto_enlace_musica")) and pd.notna(fila.get("url_musica")):
             st.markdown("### Vamos a ponerte un tema")
-            st.markdown(f'<a href="{fila["url_musica"]}" target="_blank">🎵 {fila["texto_enlace_musica"]}</a>', unsafe_allow_html=True)
+            st.markdown(f'<a href="{fila["url_musica"]}" target="_blank">📀 {fila["texto_enlace_musica"]}</a>', unsafe_allow_html=True)
 
         # Mostrar otro enlace adicional (si existe)
         if pd.notna(fila.get("texto_enlace_otro")) and pd.notna(fila.get("url_otro")):
             st.markdown("### Déjate Sorprender")
-            st.markdown(f'<a href="{fila["url_otro"]}" target="_blank">🔗 {fila["texto_enlace_otro"]}</a>', unsafe_allow_html=True)
+            st.markdown(f'<a href="{fila["url_otro"]}" target="_blank">📼 {fila["texto_enlace_otro"]}</a>', unsafe_allow_html=True)
