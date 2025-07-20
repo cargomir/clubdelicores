@@ -497,7 +497,7 @@ if not recurso_fila.empty:
     # Mostrar preparación (si existe)
     if pd.notna(fila.get("preparacion")):
         st.markdown("### Preparación")
-        st.markdown(fila["preparacion"])
+        st.markdown(f"🥄 {fila['preparacion']}")
 
 # === Sección de jarabes utilizados (si hay) ===
 
@@ -516,7 +516,7 @@ if jarabes_presentes:
     for j in jarabes_presentes:
         fila_jarabe = jarabes[jarabes["jarabe"] == j]
         if not fila_jarabe.empty:
-            st.markdown(f"**🥄 {j}**")
+            st.markdown(f"**💡 {j}**")
             st.write(fila_jarabe["preparación"].values[0])
 
 # === Técnica de preparación ===
