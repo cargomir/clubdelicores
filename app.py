@@ -544,7 +544,7 @@ if not fila_complementos.empty:
     
     if decoraciones:
         st.markdown("### Garnitura (garnish)")
-        st.write("🌿 Acompañar con: " + ", ".join(decoraciones))
+        st.write("🍋‍🟩 Acompañar con: " + ", ".join(decoraciones))
 
 # === Sección recursos asociados (si existen) ===
 
