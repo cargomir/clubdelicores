@@ -265,31 +265,59 @@ unidad_opciones = {
     "Onzas (oz)": "oz"
 }
 
+# Definir valor por defecto para la interfaz visual
+unidad_predeterminada = "Mililitros (ml)"
+unidad_label_actual = st.session_state.get("unidad_label", unidad_predeterminada)
+
 if modo == "Cantidad de cócteles":
-    unidad_label = st.sidebar.radio("Unidad de medida", list(unidad_opciones.keys()),
-        key="unidad_label")
+    unidad_label = st.sidebar.radio(
+        "Unidad de medida",
+        options=list(unidad_opciones.keys()),
+        index=list(unidad_opciones.keys()).index(unidad_label_actual),
+        key="unidad_label"
+    )
     unidad = unidad_opciones[unidad_label]
+
 else:
-    # Simular un radio con una sola opción seleccionada (Mililitros)
-    unidad_label = st.sidebar.radio("Unidad de medida", ["Mililitros (ml)"], index=0,
-    key="unidad_label")
+    # Forzar visualización y lógica a Mililitros (ml)
+    unidad_label = st.sidebar.radio(
+        "Unidad de medida",
+        ["Mililitros (ml)"],
+        index=0,
+        key="unidad_label"
+    )
     unidad = "ml"
+
 
 factor_conversion = 1 if unidad == "ml" else 1 / 30
 
 if modo == "Cantidad de cócteles":
-    cantidad = st.sidebar.number_input("Número de cócteles", min_value=1, value=1, 
-    key="cantidad")
+    # Controlar valor predeterminado de cantidad
+    cantidad_predeterminada = 1
+    cantidad_actual = st.session_state.get("cantidad", cantidad_predeterminada)
+
+    cantidad = st.sidebar.number_input(
+        "Número de cócteles",
+        min_value=1,
+        value=cantidad_actual,
+        key="cantidad"
+    )
     volumen_deseado = None
     litros = None
+
 else:
     opciones_litros = [i * 0.5 for i in range(1, 21)]  # De 0.5 a 10 litros
+
+    # Controlar valor predeterminado para litros (por ejemplo, 1 litro)
+    litros_predeterminados = opciones_litros[1]  # es 1.0
+    litros_actual = st.session_state.get("litros", litros_predeterminados)
+
     litros = st.sidebar.selectbox(
         "Litros totales",
         opciones_litros,
-        index=1,
+        index=opciones_litros.index(litros_actual),
         format_func=lambda x: str(int(x)) if x == int(x) else str(x).replace(".", ","),
-    key="litros"
+        key="litros"
     )
     cantidad = None
     volumen_deseado = litros * 1000
