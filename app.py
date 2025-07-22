@@ -243,21 +243,18 @@ else:
 
 # === Selector tipo de cálculo  ===
 
-# Definir el valor predeterminado si se limpió
+# Escoger tipo de cálculo con control de estado limpio
 modo_por_defecto = "Cantidad de cócteles"
 
-# Recuperar desde session_state si está seteado por el botón
-modo = st.session_state.get("modo_forzado", modo_por_defecto)
+# Establecer valor predeterminado si no existe
+modo_actual = st.session_state.get("modo_forzado", modo_por_defecto)
 
-# Mostrar el radio sin `key`, pero con valor controlado
 modo = st.sidebar.radio(
     "Tipo de cantidad",
     ["Cantidad de cócteles", "Volumen total (litros)"],
-    index=0 if modo == "Cantidad de cócteles" else 1
+    index=["Cantidad de cócteles", "Volumen total (litros)"].index(modo_actual),
+    key="modo_forzado"
 )
-
-# Guardar el valor actual del radio si no fue forzado (flujo normal)
-st.session_state["modo_forzado"] = modo
 
 # Escoger unidad de medida según modo
 unidad_opciones = {
@@ -343,7 +340,7 @@ ingredientes = fila_receta.drop([
 ingredientes = ingredientes[ingredientes.notna() & (ingredientes != 0)]
 
 # === Botón de limpiar filtros ===
-CAMPOS_RESET = ["licor_sel", "coctel_sel", "unidad_label", "cantidad", "litros", "palabra_clave_input"]
+CAMPOS_RESET = ["licor_sel", "coctel_sel", "unidad_label", "cantidad", "litros", "palabra_clave_input", "modo_forzado"]
 
 if st.sidebar.button("Limpiar selección"):
     for clave in CAMPOS_RESET:
