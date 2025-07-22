@@ -348,7 +348,6 @@ CAMPOS_RESET = ["licor_sel", "coctel_sel", "unidad_label", "cantidad", "litros",
 if st.sidebar.button("Limpiar selección"):
     for clave in CAMPOS_RESET:
         st.session_state.pop(clave, None)
-    st.session_state["modo_forzado"] = "Cantidad de cócteles"
     st.rerun()
 
 # Cálculo de volumen y factor
