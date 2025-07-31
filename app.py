@@ -551,7 +551,7 @@ st.write(f"🛠️ **{fila_receta['tecnica']} ({tecnica_info['nombre_español']}
 hielo = fila_receta["hielo"]
 if pd.notna(hielo) and str(hielo).strip().lower() in ["Sí", "Si", "sí", "si"]:
     st.markdown("### Hielo")
-    st.write("❄️ Servir en un vaso o copa con hielo. En cócteles largos, y en general cuando se busca retardar la dilución, se recomienda utilizar hielos de mayor tamaño. En cambio, en preparaciones que requieren enfriamiento rápido y una leve dilución, como cócteles tipo Fizz o tropicales, usualmente se utiliza hielo picado o en cubos pequeños.")
+    st.write("❄️ Servir en un vaso o copa con hielo. En la mayoría de los casos se busca retardar la dilución; por ello, en general, se recomienda utilizar hielos de mayor tamaño. No obstante, en algunas preparaciones se busca lograr un enfriamiento rápido y una leve dilución, como ocurre con cócteles tipo Fizz o tropicales. En estos casos, se indica explícitamente el uso de hielo picado o en cubos pequeños.")
 else:
     st.markdown("### Hielo")
     st.write("🚫 Servir sin hielo.")
