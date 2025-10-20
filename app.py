@@ -445,6 +445,7 @@ st.sidebar.markdown(f"""
             <img src="https://img.icons8.com/fluency/24/000000/instagram-new.png" style="vertical-align: middle;"/> @clubdelicores
         </a>
     </p>
+    <p>En el <b>Club de Licores</b> entendemos la coctelería como una forma de encuentro y una expresión de cultura, creatividad y alegría. Amamos compartir la mesa y la buena vida, y, en consecuencia, promovemos un consumo de alcohol moderado y responsable.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -606,6 +607,11 @@ if not recurso_fila.empty:
         if pd.notna(fila.get("texto_enlace_musica")) and pd.notna(fila.get("url_musica")):
             st.markdown("### Vamos a ponerte un tema")
             st.markdown(f'<a href="{fila["url_musica"]}" target="_blank">📀 {fila["texto_enlace_musica"]}</a>', unsafe_allow_html=True)
+
+         # Mostrar otro enlace musical (si existe)
+        if pd.notna(fila.get("texto_enlace_musica_2")) and pd.notna(fila.get("url_musica_2")):
+            st.markdown("### Vamos a ponerte otro tema")
+            st.markdown(f'<a href="{fila["url_musica_2"]}" target="_blank">📀 {fila["texto_enlace_musica_2"]}</a>', unsafe_allow_html=True)
 
         # Mostrar otro enlace adicional (si existe)
         if pd.notna(fila.get("texto_enlace_otro")) and pd.notna(fila.get("url_otro")):
