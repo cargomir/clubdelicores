@@ -546,7 +546,7 @@ if jarabes_presentes:
 
 # === Técnica de preparación ===
 st.markdown("### Técnica")
-st.write(f"🛠️ **{fila_receta['tecnica']} ({tecnica_info['nombre_español']})** – {tecnica_info['descripción']}")
+st.write(f"🛠️ **{tecnica_info['nombre_español']} ({fila_receta['tecnica']})** – {tecnica_info['descripción']}")
 
 # === Información sobre el hielo ===
 hielo = fila_receta["hielo"]
