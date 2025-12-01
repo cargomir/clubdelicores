@@ -391,7 +391,8 @@ ingredientes_unidades = {
     "Frambuesas": "frambuesas",
     "Arándanos": "arándanos",
     "Uvas": "uvas",
-    "Rama de Canela": "rama de canela",
+    "Rama de Canela": "rama(s) de canela",
+    "Clavos de Olor": "clavos de olor",
     "Naranja en Rodajas": "naranja(s) en rodajas",	
     "Manzana en Cubos": "manzana(s) en cubos",
     "Huevo": "huevo(s)",
@@ -409,6 +410,10 @@ ingredientes_cucharadas = {
     "Azúcar": "azúcar",
 }
 
+ingredientes_tazas = {
+    "Azúcar 2": "azúcar",
+}
+
 ingredientes_gramos = {
     "Chirimoya": "chirimoya",
     "Frutillas": "frutillas",
@@ -416,7 +421,7 @@ ingredientes_gramos = {
 }
 
 # 4. Convertir a la unidad final (solo líquidos u otros convertibles)
-ingredientes_a_excluir = set(ingredientes_a_gusto) | set(ingredientes_gotas) | set(ingredientes_unidades) | set(ingredientes_cucharadas)
+ingredientes_a_excluir = set(ingredientes_a_gusto) | set(ingredientes_gotas) | set(ingredientes_unidades) | set(ingredientes_cucharadas) | set(ingredientes_tazas)
 ingredientes_convertibles = [ing for ing in ingredientes.index if ing not in ingredientes_a_excluir]
 
 ingredientes_ajustados = ingredientes_escalados_ml.copy()
@@ -495,6 +500,12 @@ for ing in ingredientes_ajustados.index:
         cantidad_c2 = int(round(val_ajustado))
         nombre_c2 = ingredientes_cucharadas[ing]
         st.write(f"- {cantidad_c2} cucharada(s) de {nombre_c2}")
+    
+    # Ingredientes que se agregan en tazas
+    elif ing in ingredientes_tazas:
+        cantidad_c3 = int(round(val_ajustado))
+        nombre_c3 = ingredientes_tazas[ing]
+        st.write(f"- {cantidad_c3} taza(s) de {nombre_c3}")
 
     # Ingredientes que se agregan en gramos
     elif ing in ingredientes_gramos:
@@ -586,6 +597,8 @@ if not recurso_fila.empty:
         pd.notna(fila.get("recurso")),
         pd.notna(fila.get("texto_enlace_musica")) and pd.notna(fila.get("url_musica")),
         pd.notna(fila.get("texto_enlace_otro")) and pd.notna(fila.get("url_otro")),
+        pd.notna(fila.get("texto_enlace_musica_2")) and pd.notna(fila.get("url_musica_2")),
+        pd.notna(fila.get("imagen")),
     ])
 
     if hay_recursos:
@@ -617,3 +630,32 @@ if not recurso_fila.empty:
         if pd.notna(fila.get("texto_enlace_otro")) and pd.notna(fila.get("url_otro")):
             st.markdown("### Déjate Sorprender")
             st.markdown(f'<a href="{fila["url_otro"]}" target="_blank">📼 {fila["texto_enlace_otro"]}</a>', unsafe_allow_html=True)
+        
+        # === Mostrar IMAGEN Y CRÉDITOS ===
+        if pd.notna(fila.get("imagen")):
+            lineas = fila["imagen"].strip().split("\n")
+
+            # 1) Primera línea: nombre del archivo
+            archivo_imagen = lineas[0].strip()
+
+            # 2) La segunda línea son los créditos (título que quieres mostrar)
+            creditos = lineas[1].strip() if len(lineas) > 1 else "Créditos"
+
+            # 3) El resto del texto (si lo hubiera)
+            contenido = "\n".join(lineas[2:]).strip() if len(lineas) > 2 else ""
+
+            # Ruta completa
+            image_path = f"imagenes/{archivo_imagen}"
+
+            # Mostrar imagen desde carpeta local
+            if os.path.exists(image_path):
+                st.image(image_path, use_container_width=True)
+            else:
+                st.warning(f"Imagen no encontrada: {archivo_imagen}")
+
+            # Mostrar créditos
+            st.markdown(f" {creditos}")
+
+            # Mostrar texto adicional (opcional)
+            if contenido:
+                st.text(contenido)
