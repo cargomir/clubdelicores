@@ -392,18 +392,21 @@ ingredientes_unidades = {
     "Arándanos": "arándanos",
     "Uvas": "uvas",
     "Rama de Canela": "rama(s) de canela",
-    "Clavos de Olor": "clavos de olor",
+    "Clavos de Olor": "clavo(s) de olor",
     "Naranja en Rodajas": "naranja(s) en rodajas",	
     "Manzana en Cubos": "manzana(s) en cubos",
     "Huevo": "huevo(s)",
     "Melón": "melón tuna entero",
-    "Durazno Trozado": "durazno(s) en cubos"
+    "Durazno Trozado": "durazno(s) en cubos",
+    "Cascarita de Naranja": "cascarita(s) de naranja"
 }
 
 ingredientes_cucharaditas = {
     "Azúcar Flor": "azúcar flor (glas)",
     "Harina Tostada": "harina tostada",
-    "Cacao": "cacao en polvo sin azúcar"
+    "Cacao": "cacao en polvo sin azúcar",
+    "Esencia de Vainilla 2":"esencia de vainilla",
+    "Café Instantáneo": "café instantáneo"
 }
 
 ingredientes_cucharadas = {
