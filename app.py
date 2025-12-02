@@ -376,7 +376,8 @@ ingredientes_gotas = {
     "Salsa Inglesa": "Salsa Inglesa",
     "Salsa Tabasco": "Salsa Tabasco",
     "Agua": "agua",
-    "Esencia de Vainilla": "esencia de vainilla"
+    "Esencia de Vainilla": "esencia de vainilla",
+    "Agua de Azahar": "agua de azahar"
 }
 
 ingredientes_unidades = {
@@ -453,8 +454,8 @@ st.sidebar.markdown(f"""
             <img src="https://img.icons8.com/fluency/24/000000/instagram-new.png" style="vertical-align: middle;"/> @clubdelicores
         </a>
     </p>
-    <p>En el <b>Club de Licores</b> entendemos la coctelería como una forma de encuentro y una expresión de cultura, creatividad y alegría. Amamos compartir la mesa y la buena vida, y, en consecuencia, promovemos un consumo de alcohol moderado y responsable.</p>
-</div>
+    
+</div><p>En <b>Club de Licores</b> entendemos la coctelería como una forma de encuentro y una expresión de cultura, creatividad y alegría. Nos apasiona compartir la mesa y celebrar la buena vida; por eso promovemos un consumo de alcohol moderado y responsable.</p>
 """, unsafe_allow_html=True)
 
 # === Visualización central ===
