@@ -454,8 +454,8 @@ st.sidebar.markdown(f"""
             <img src="https://img.icons8.com/fluency/24/000000/instagram-new.png" style="vertical-align: middle;"/> @clubdelicores
         </a>
     </p>
-    
-</div><p>En <b>Club de Licores</b> entendemos la coctelería como una forma de encuentro y una expresión de cultura, creatividad y alegría. Nos apasiona compartir la mesa y celebrar la buena vida; por eso promovemos un consumo de alcohol moderado y responsable.</p>
+    <p>En <b>Club de Licores</b> entendemos la coctelería como una forma de encuentro y una expresión de cultura, creatividad y alegría. Nos apasiona compartir la mesa y celebrar la buena vida; por eso promovemos un consumo de alcohol moderado y responsable.</p>
+</div>
 """, unsafe_allow_html=True)
 
 # === Visualización central ===
