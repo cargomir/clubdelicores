@@ -429,7 +429,7 @@ ingredientes_gramos = {
 }
 
 # 4. Convertir a la unidad final (solo líquidos u otros convertibles)
-ingredientes_a_excluir = set(ingredientes_a_gusto) | set(ingredientes_gotas) | set(ingredientes_unidades) | set(ingredientes_cucharadas) | set(ingredientes_tazas)
+ingredientes_a_excluir = set(ingredientes_a_gusto) | set(ingredientes_gotas) | set(ingredientes_unidades) | set(ingredientes_cucharadas) | set(ingredientes_tazas) | set(ingredientes_gramos)
 ingredientes_convertibles = [ing for ing in ingredientes.index if ing not in ingredientes_a_excluir]
 
 ingredientes_ajustados = ingredientes_escalados_ml.copy()
