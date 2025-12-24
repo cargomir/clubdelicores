@@ -368,7 +368,8 @@ ingredientes_a_gusto = {
     "Canela": "canela",
     "Nuez Moscada": "nuez moscada",
     "Whisky o Brandy": "whisky o brandy",
-    "Leche Condensada": "leche condensada"
+    "Leche Condensada": "leche condensada",
+    "Anís Estrella": "anís estrella"
 }
 
 ingredientes_gotas = {
@@ -376,7 +377,7 @@ ingredientes_gotas = {
     "Salsa Inglesa": "Salsa Inglesa",
     "Salsa Tabasco": "Salsa Tabasco",
     "Agua": "agua",
-    "Esencia de Vainilla": "esencia de vainilla",
+    "Esencia de Vainilla 2": "esencia de vainilla",
     "Agua de Azahar": "agua de azahar"
 }
 
@@ -406,12 +407,13 @@ ingredientes_cucharaditas = {
     "Azúcar Flor": "azúcar flor (glas)",
     "Harina Tostada": "harina tostada",
     "Cacao": "cacao en polvo sin azúcar",
-    "Esencia de Vainilla 2":"esencia de vainilla",
+    "Esencia de Vainilla 3": "esencia de vainilla",
     "Café Instantáneo": "café instantáneo"
 }
 
 ingredientes_cucharadas = {
     "Azúcar": "azúcar",
+     "Café Instantáneo 2": "café instantáneo"
 }
 
 ingredientes_tazas = {
@@ -421,7 +423,9 @@ ingredientes_tazas = {
 ingredientes_gramos = {
     "Chirimoya": "chirimoya",
     "Frutillas": "frutillas",
-    "Mango": "mango maduro"
+    "Mango": "mango maduro",
+    "Azúcar 3": "azúcar",
+    "Leche Condensada 2": "leche condensada"
 }
 
 # 4. Convertir a la unidad final (solo líquidos u otros convertibles)
