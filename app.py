@@ -615,31 +615,7 @@ if not recurso_fila.empty:
             "<h2 style='color: #e63118; font-size: 36px; font-weight: bold;'>Recursos adicionales</h2>",
             unsafe_allow_html=True
         )
-
-       # Mostrar recurso largo (como poema o relato)
-        if pd.notna(fila.get("recurso")):
-            lineas = fila["recurso"].strip().split("\n")
-            titulo = lineas[0] if lineas else "Recurso"
-            contenido = "\n".join(lineas[1:]).strip()
-            st.markdown(f"### {titulo}")
-            st.text(contenido)
-
-        # Mostrar enlace musical (si existe)
-        if pd.notna(fila.get("texto_enlace_musica")) and pd.notna(fila.get("url_musica")):
-            st.markdown("### Vamos a ponerte un tema")
-            st.markdown(f'<a href="{fila["url_musica"]}" target="_blank">📀 {fila["texto_enlace_musica"]}</a>', unsafe_allow_html=True)
-
-         # Mostrar otro enlace musical (si existe)
-        if pd.notna(fila.get("texto_enlace_musica_2")) and pd.notna(fila.get("url_musica_2")):
-            st.markdown("### Vamos a ponerte otro tema")
-            st.markdown(f'<a href="{fila["url_musica_2"]}" target="_blank">📀 {fila["texto_enlace_musica_2"]}</a>', unsafe_allow_html=True)
-
-        # Mostrar otro enlace adicional (si existe)
-        if pd.notna(fila.get("texto_enlace_otro")) and pd.notna(fila.get("url_otro")):
-            st.markdown("### Déjate Sorprender")
-            st.markdown(f'<a href="{fila["url_otro"]}" target="_blank">📼 {fila["texto_enlace_otro"]}</a>', unsafe_allow_html=True)
-        
-        # === Mostrar IMAGEN Y CRÉDITOS ===
+# === Mostrar IMAGEN Y CRÉDITOS ===
         if pd.notna(fila.get("imagen")):
             lineas = fila["imagen"].strip().split("\n")
 
@@ -667,3 +643,28 @@ if not recurso_fila.empty:
             # Mostrar texto adicional (opcional)
             if contenido:
                 st.text(contenido)
+                
+       # Mostrar recurso largo (como poema o relato)
+        if pd.notna(fila.get("recurso")):
+            lineas = fila["recurso"].strip().split("\n")
+            titulo = lineas[0] if lineas else "Recurso"
+            contenido = "\n".join(lineas[1:]).strip()
+            st.markdown(f"### {titulo}")
+            st.text(contenido)
+
+        # Mostrar enlace musical (si existe)
+        if pd.notna(fila.get("texto_enlace_musica")) and pd.notna(fila.get("url_musica")):
+            st.markdown("### Vamos a ponerte un tema")
+            st.markdown(f'<a href="{fila["url_musica"]}" target="_blank">📀 {fila["texto_enlace_musica"]}</a>', unsafe_allow_html=True)
+
+         # Mostrar otro enlace musical (si existe)
+        if pd.notna(fila.get("texto_enlace_musica_2")) and pd.notna(fila.get("url_musica_2")):
+            st.markdown("### Vamos a ponerte otro tema")
+            st.markdown(f'<a href="{fila["url_musica_2"]}" target="_blank">📀 {fila["texto_enlace_musica_2"]}</a>', unsafe_allow_html=True)
+
+        # Mostrar otro enlace adicional (si existe)
+        if pd.notna(fila.get("texto_enlace_otro")) and pd.notna(fila.get("url_otro")):
+            st.markdown("### Déjate Sorprender")
+            st.markdown(f'<a href="{fila["url_otro"]}" target="_blank">📼 {fila["texto_enlace_otro"]}</a>', unsafe_allow_html=True)
+        
+        
