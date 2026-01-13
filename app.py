@@ -129,7 +129,7 @@ recursos = pd.read_excel("data/recetas.xlsx", sheet_name="recurso")
 st.sidebar.title("Opciones")
 
 # === Identificar columnas ===
-columnas_licor = recetas.columns[8:53]
+columnas_licor = recetas.columns[8:54]
 
 # === Paso 1: Aplicar filtro por palabra clave ===
 palabra_clave = st.session_state.get("palabra_clave_input", "").strip().lower()
