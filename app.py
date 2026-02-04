@@ -623,7 +623,7 @@ if not recurso_fila.empty:
             archivo_imagen = lineas[0].strip()
 
             # 2) La segunda línea son los créditos (título que quieres mostrar)
-            creditos = lineas[1].strip() if len(lineas) > 1 else "Créditos"
+            creditos = lineas[1].strip() if len(lineas) > 1 else " "
 
             # 3) El resto del texto (si lo hubiera)
             contenido = "\n".join(lineas[2:]).strip() if len(lineas) > 2 else ""
