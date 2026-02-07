@@ -633,7 +633,7 @@ if not recurso_fila.empty:
 
             # Mostrar imagen desde carpeta local
             if os.path.exists(image_path):
-                st.image(image_path, use_container_width=True)
+                st.image(image_path, width="stretch")
             else:
                 st.warning(f"Imagen no encontrada: {archivo_imagen}")
 
@@ -655,12 +655,30 @@ if not recurso_fila.empty:
         # Mostrar enlace musical (si existe)
         if pd.notna(fila.get("texto_enlace_musica")) and pd.notna(fila.get("url_musica")):
             st.markdown("### Vamos a ponerte un tema")
-            st.markdown(f'<a href="{fila["url_musica"]}" target="_blank">📀 {fila["texto_enlace_musica"]}</a>', unsafe_allow_html=True)
+            st.markdown(
+                f'<a href="{fila["url_musica"]}" target="_blank">📀 {fila["texto_enlace_musica"]}</a>',
+                unsafe_allow_html=True
+            )
 
-         # Mostrar otro enlace musical (si existe)
+            # Mostrar explicación si existe
+            if pd.notna(fila.get("cita_letra")):
+                st.markdown(
+                    f'>La canción se seleccionó porque este verso lo pide:\n>\n> *{fila["cita_letra"]}*'
+                )
+
+        # Mostrar otro enlace musical (si existe)
         if pd.notna(fila.get("texto_enlace_musica_2")) and pd.notna(fila.get("url_musica_2")):
             st.markdown("### Vamos a ponerte otro tema")
-            st.markdown(f'<a href="{fila["url_musica_2"]}" target="_blank">📀 {fila["texto_enlace_musica_2"]}</a>', unsafe_allow_html=True)
+            st.markdown(
+                f'<a href="{fila["url_musica_2"]}" target="_blank">📀 {fila["texto_enlace_musica_2"]}</a>',
+                unsafe_allow_html=True
+            )
+
+            # Mostrar explicación si existe
+            if pd.notna(fila.get("cita_letra_2")):
+                st.markdown(
+                    f'>La canción se seleccionó porque este verso lo pide:\n>\n> *{fila["cita_letra_2"]}*'
+                )
 
         # Mostrar otro enlace adicional (si existe)
         if pd.notna(fila.get("texto_enlace_otro")) and pd.notna(fila.get("url_otro")):
