@@ -623,11 +623,8 @@ if not recurso_fila.empty:
             # 1) Primera línea: nombre del archivo
             archivo_imagen = lineas[0] if len(lineas) > 0 else ""
 
-            # 2) La segunda línea son los créditos (título que quieres mostrar)
-            creditos = lineas[1] if len(lineas) > 1 else ""
-
-            # 3) El resto del texto (si lo hubiera)
-            contenido = "\n".join(lineas[2:]) if len(lineas) > 2 else ""
+            # 2) El texto (si lo hubiera)
+            contenido = "\n".join(lineas[1:]) if len(lineas) > 1 else ""
 
             # Ruta completa
             image_path = f"imagenes/{archivo_imagen}"
@@ -638,10 +635,7 @@ if not recurso_fila.empty:
             else:
                 st.warning(f"Imagen no encontrada: {archivo_imagen}")
 
-            # Mostrar créditos
-            st.markdown(f" {creditos}")
-
-            # Mostrar texto adicional (opcional)
+            # Mostrar texto si existe(opcional)
             if contenido:
                 st.text(contenido)
                 
