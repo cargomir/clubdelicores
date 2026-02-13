@@ -615,18 +615,19 @@ if not recurso_fila.empty:
             "<h2 style='color: #e63118; font-size: 36px; font-weight: bold;'>Recursos adicionales</h2>",
             unsafe_allow_html=True
         )
-# === Mostrar IMAGEN Y CRÉDITOS ===
+        
+        # === Mostrar IMAGEN Y CRÉDITOS ===
         if pd.notna(fila.get("imagen")):
-            lineas = fila["imagen"].strip().split("\n")
+            lineas = [l.strip() for l in fila["imagen"].split("\n") if l.strip()]
 
             # 1) Primera línea: nombre del archivo
-            archivo_imagen = lineas[0].strip()
+            archivo_imagen = lineas[0] if len(lineas) > 0 else ""
 
             # 2) La segunda línea son los créditos (título que quieres mostrar)
-            creditos = lineas[1].strip() if len(lineas) > 1 else " "
+            creditos = lineas[1] if len(lineas) > 1 else ""
 
             # 3) El resto del texto (si lo hubiera)
-            contenido = "\n".join(lineas[2:]).strip() if len(lineas) > 2 else ""
+            contenido = "\n".join(lineas[2:]) if len(lineas) > 2 else ""
 
             # Ruta completa
             image_path = f"imagenes/{archivo_imagen}"
@@ -651,6 +652,11 @@ if not recurso_fila.empty:
             contenido = "\n".join(lineas[1:]).strip()
             st.markdown(f"### {titulo}")
             st.text(contenido)
+
+        # Mostrar otro enlace adicional (si existe)
+        if pd.notna(fila.get("texto_enlace_otro")) and pd.notna(fila.get("url_otro")):
+            st.markdown("### Déjate Sorprender")
+            st.markdown(f'<a href="{fila["url_otro"]}" target="_blank">📼 {fila["texto_enlace_otro"]}</a>', unsafe_allow_html=True)
 
         # Mostrar enlace musical (si existe)
         if pd.notna(fila.get("texto_enlace_musica")) and pd.notna(fila.get("url_musica")):
@@ -680,9 +686,6 @@ if not recurso_fila.empty:
                     f'>La canción se seleccionó porque este verso lo pide:\n>\n> *{fila["cita_letra_2"]}*'
                 )
 
-        # Mostrar otro enlace adicional (si existe)
-        if pd.notna(fila.get("texto_enlace_otro")) and pd.notna(fila.get("url_otro")):
-            st.markdown("### Déjate Sorprender")
-            st.markdown(f'<a href="{fila["url_otro"]}" target="_blank">📼 {fila["texto_enlace_otro"]}</a>', unsafe_allow_html=True)
+
         
         
